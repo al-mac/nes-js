@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Nes EMU</title>
+		<link rel="manifest" href="./web/manifest.json" />
+		<link rel="shortcut icon" href="./web/favicon.ico" />
+		<script type="text/javascript" src="./emu/dbg.js"></script>
+		<script type="text/javascript" src="./emu/ppu.js"></script>
+		<script type="text/javascript" src="./emu/mpr.js"></script>
+		<script type="text/javascript" src="./emu/mmu.js"></script>
+		<script type="text/javascript" src="./emu/apu.js"></script>
+		<script type="text/javascript" src="./emu/cpu.js"></script>
+		<script type="text/javascript" src="./emu/nes.js"></script>
+		<link rel="stylesheet" type="text/css" href="./web/site.css" />
+	</head>
+	<body>
+		<div id="container">
+			<div class="section-side">
+				<div class="sub-section" style="height:20%">
+					<div class="buttons" data-which="load-rom">
+						<div class="btn-ss" data-which="load-rom">LOAD ROM</div>
+						<input type="file" id="loader" style="display:none" />
+					</div>
+				</div>
+				<div class="sub-section" style="height:80%;background:rgb(26,26,26)">
+					<div class="dpad">
+						<div data-which="dpad"></div>
+					</div>
+				</div>
+			</div>
+			<div class="section-center">
+				<canvas id="screen" width="256" height="240"></canvas>
+			</div>
+			<div class="section-side">
+				<div class="sub-section" style="height:20%">
+					<div class="buttons" data-which="select">
+						<div data-which="select" class="btn-ss">SELECT</div>
+					</div>
+					<div class="buttons" data-which="start">
+						<div data-which="start" class="btn-ss">START</div>
+					</div>
+				</div>
+				<div class="sub-section" style="height:80%;background:rgb(26,26,26)">
+					<div class="buttons" data-which="b">
+						<div class="btn-red" data-which="b">B</div>
+					</div>
+					<div class="buttons" data-which="a">
+						<div class="btn-red" data-which="a">A</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="./web/main.js"></script>
+	</body>
+</html>
