@@ -12,7 +12,7 @@ var mmu = (function(nes) {
 		ne.ppu.mir = rom[6] & 1;
 		switch(mapr) {
 			case 0: mp = new mpr0(ne); break;
-			//case 1: mp = new mpr1(ne); break;
+			case 1: mp = new mpr1(ne); break;
 			case 2:case 66: mp = new mpr2(ne); break;
 			default: console.log("mapper " + mapr); break;
 		};
