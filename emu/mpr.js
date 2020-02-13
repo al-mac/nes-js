@@ -32,10 +32,11 @@ var mpr1 = (function(nes) {
 		for(let i = 0; i < cbase; i++) ne.ppu.wv(i, rom[i + pbase]);
 	};
 
-	var ldchr = () => {
-		let pbase = 0x10 + (rom[4] << 0x0E);
-		let cbase = rom[5] << 0x0D::Ç:;
-		for(let i = 0; i < cbase; i++) ne.ppu.wv(i, rom[i + pbase]);
+	var ldchr = (c, v) => {
+		let o = c * 0x1000;
+		let pbase = 0x10 + (rom[4] << 0x0E) + (v << 0x08);
+		let cbase = ctr & 0x10 ? 0x1000 : 0x2000;
+		for(let i = 0; i < cbase; i++) ne.ppu.wv(i + o, rom[i + pbase]);
 	};
 
 	me.d = (a) => a;
@@ -49,15 +50,15 @@ var mpr1 = (function(nes) {
 
 	me.wb = (a, v) => {
 		if(v & 0x80) { wct = 0; vlr = 0; };
-		vlr <<= 1;
-		vlr |= (v & 0x01);
+		vlr >>= 1;
+		vlr |= ((v & 0x01) << 4);
 		wct++;
 		if(wct === 5) {
 			wct = 0;
 			vlr &= 0x1F;
 			if(a < 0xA000) ctr = vlr;
-			else if(a < 0xC000) { ccbl = vlr; ldchr(); }
-			else if(a < 0xE000) { ccbh = vlr; ldchr(); }
+			else if(a < 0xC000) { ccbl = vlr; ldchr(0, ccbl); vlr = 0; }
+			else if(a < 0xE000) { ccbh = vlr; ldchr(1, ccbh); vlr = 0; }
 			else pcb = vlr;
 		};
 	};
