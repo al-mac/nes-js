@@ -41,10 +41,27 @@ var mpr1 = (function(nes) {
 		for(let i = 0; i < cbase; i++) ne.ppu.wv(i + o, rom[i + pbase]);
 	};
 
+	var ldprg = (v) => {
+		let m = (ctr & 0x0C) >> 2;
+		let o = 0x8000;
+		let b = 0x8000;
+		if(m < 2) v &= 0xFE;
+		else { b = 0x4000; if(m === 2) o = 0xC000; };
+		for(let i = 0; i < b; i++) ne.mmu.wbp(i + o, rom[i + 0x10]);
+	};
+
 	me.d = (a) => a;
 
 	me.rb = (a) => {
-		let dec = 0x10 + (a < 0xC000 ? ((pcb << 0x0E) + (a - 0x8000)) : ((rom[4] << 0x0E) - 0x4000 + (a - 0xC000)));
+		let dec = 0x10;
+		switch(ctr) {
+			case 2: break;
+			case 3: break;
+			default:
+				dec += (pcb << 0x0F);
+				//dec += (a < 0xC000 ? ((pcb << 0x0F) + (a - 0x8000)) : ((rom[4] << 0x0F) - 0x8000 + (a - 0xC000)));
+				break;
+		};
 		return rom[dec];
 	};
 
@@ -59,7 +76,7 @@ var mpr1 = (function(nes) {
 			if(a < 0xA000) { ctr = vlr; ne.ppu.os = ctr & 0x01; }
 			else if(a < 0xC000) { ccbl = vlr; ldchr(0, ccbl); vlr = 0; }
 			else if(a < 0xE000) { ccbh = vlr; ldchr(1, ccbh); vlr = 0; }
-			else pcb = vlr;
+			else { pcb = vlr; }
 		};
 	};
 });
