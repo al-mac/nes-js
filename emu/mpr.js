@@ -34,7 +34,7 @@ var mpr1 = (function(nes) {
 
 	var ldchr = (c, v) => {
 		let m = ctr & 0x10;
-		if(!m) { v &= 0xFE; if(c > 0) return; };
+		if(!m) { v &= 0xFE; if(c === 1) return; };
 		let o = c * 0x1000;
 		let pbase = 0x10 + (rom[4] << 0x0E) + (v << (12 + (m ? 0 : 1)));
 		let cbase = m ? 0x1000 : 0x2000;
@@ -44,8 +44,6 @@ var mpr1 = (function(nes) {
 	me.d = (a) => a;
 
 	me.rb = (a) => {
-		//if(a < 0xA000) return ctr;
-		//if(a < 0xC000) 
 		let dec = 0x10 + (a < 0xC000 ? ((pcb << 0x0E) + (a - 0x8000)) : ((rom[4] << 0x0E) - 0x4000 + (a - 0xC000)));
 		return rom[dec];
 	};
@@ -58,7 +56,7 @@ var mpr1 = (function(nes) {
 		if(wct === 5) {
 			wct = 0;
 			vlr &= 0x1F;
-			if(a < 0xA000) { ctr = vlr; ne.ppu.mir = ctr & 0x03; }
+			if(a < 0xA000) { ctr = vlr; ne.ppu.os = ctr & 0x01; }
 			else if(a < 0xC000) { ccbl = vlr; ldchr(0, ccbl); vlr = 0; }
 			else if(a < 0xE000) { ccbh = vlr; ldchr(1, ccbh); vlr = 0; }
 			else pcb = vlr;

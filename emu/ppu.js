@@ -44,6 +44,7 @@ var ppu = (function(nes) {
 	// 6 = PPUADDR_H	7 = PPUADDR_L	8 = OAMDMA
 	// 9 = LATCH		10= ODDEVEN
 	var r = new Uint8Array(11);
+	me.os = 0x00;														// ONE SCREEN MAPPING
 
 	me.rb = (a) => {
 		switch(a) {
@@ -152,6 +153,7 @@ var ppu = (function(nes) {
 	var calcnt = (b) => {												// CALCULAR NAMETABLES
 		var ba = 0x400 * b;
 		var pti = (r[0] & 0x10) >> 4;									// INDICE DA PATTERN TABLE DE BGS
+		if(me.os) pti = me.os === 1 ? 0 : 1;
 		for(var y = 0; y < 240; y++) {
 			var ry = (y / 8) | 0;										// Y TILE
 			for(var x = 0; x < 256; x++) {
